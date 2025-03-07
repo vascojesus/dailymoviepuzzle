@@ -2,8 +2,8 @@ name: Daily Answer Tweet
 
 on:
   schedule:
-    - cron: '0 18 * * *'  # Runs at 18:00 UTC (same as 6 PM Lisbon time)
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '0 18 * * *'  # Runs at 18:00 UTC (Same as 6 PM Lisbon time)
+  workflow_dispatch:
 
 jobs:
   tweet_answer:
@@ -29,4 +29,6 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          DAY_COUNT: ${{ env.DAY_COUNT }}
+          LAST_MOVIE: ${{ env.LAST_MOVIE }}
         run: python post_answer.py

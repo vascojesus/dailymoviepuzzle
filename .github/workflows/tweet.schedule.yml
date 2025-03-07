@@ -3,7 +3,7 @@ name: Daily Movie Tweet
 on:
   schedule:
     - cron: '0 7 * * *'  # Runs at 07:00 UTC (Same as Lisbon Time)
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   tweet:
@@ -29,4 +29,11 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          DAY_COUNT: ${{ secrets.DAY_COUNT }}
         run: python main.py
+
+      - name: Update GitHub Secret with New Day Count
+        run: |
+          gh secret set DAY_COUNT --body="${{ env.DAY_COUNT }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

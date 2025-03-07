@@ -32,23 +32,15 @@ random_image = random.choice(image_files)
 
 movie_name = os.path.basename(random_image).rsplit('.', 1)[0].replace('_', ' ')
 
-counter_file = "tweet_counter.txt"
-
-if not os.path.exists(counter_file):
-    day_count = 1
-else:
-    with open(counter_file, "r") as f:
-        day_count = int(f.read().strip()) + 1
-
-with open(counter_file, "w") as f:
-    f.write(str(day_count))
-
-with open("last_posted.txt", "w") as f:
-    f.write(f"{day_count},{movie_name}")
+day_count = int(os.getenv("DAY_COUNT", 1))
 
 media = api.media_upload(filename=random_image)
 
-tweet_text = f"Day {day_count}: 🎬 #DailyMoviePuzzle"
+tweet_text = f"Day {day_count}: 🎬 #DailyMoviePuzzle #Movie #Puzzle"
 response = client.create_tweet(text=tweet_text, media_ids=[media.media_id_string], user_auth=True)
+
+with open(os.getenv('GITHUB_ENV'), 'a') as env_file:
+    env_file.write(f"DAY_COUNT={day_count + 1}\n")
+    env_file.write(f"LAST_MOVIE={movie_name}\n")
 
 print("Tweet posted successfully!", response)
