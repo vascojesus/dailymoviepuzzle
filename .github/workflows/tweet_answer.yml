@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: state  # Pull `state.json` from the `state` branch
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,6 +31,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-          DAY_COUNT: ${{ env.DAY_COUNT }}
-          LAST_MOVIE: ${{ env.LAST_MOVIE }}
         run: python post_answer.py

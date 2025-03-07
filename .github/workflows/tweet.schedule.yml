@@ -32,9 +32,11 @@ jobs:
           DAY_COUNT: ${{ vars.DAY_COUNT }}
         run: python main.py
 
-      - name: Update GitHub Variables with `LAST_MOVIE`
+      - name: Commit and push state.json
         run: |
-          echo "Updating GitHub Variable LAST_MOVIE..."
-          gh variable set LAST_MOVIE --body "${{ env.LAST_MOVIE }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout -b state || git checkout state
+          git add state.json
+          git commit -m "Update LAST_MOVIE"
+          git push origin state

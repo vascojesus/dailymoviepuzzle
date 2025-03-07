@@ -1,10 +1,13 @@
 import os
+import json
 import random
 import tweepy
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
+# Twitter API credentials
 consumer_key = os.getenv("CONSUMER_KEY")
 consumer_secret = os.getenv("CONSUMER_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
@@ -41,7 +44,9 @@ response = client.create_tweet(text=tweet_text, media_ids=[media.media_id_string
 
 print(f"✅ Posted Daily Puzzle Tweet: Day {day_count}")
 
-update_last_movie_cmd = f'gh variable set LAST_MOVIE --body "{movie_name}"'
-os.system(update_last_movie_cmd)
+state_data = {"DAY_COUNT": day_count + 1, "LAST_MOVIE": movie_name}
 
-print(f"✅ Stored LAST_MOVIE in GitHub Variables: {movie_name}")
+with open("state.json", "w") as f:
+    json.dump(state_data, f)
+
+print(f"✅ Stored LAST_MOVIE in `state.json`: {movie_name}")

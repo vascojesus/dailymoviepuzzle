@@ -1,4 +1,5 @@
 import os
+import json
 import tweepy
 from dotenv import load_dotenv
 
@@ -16,8 +17,15 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-day_count = os.getenv("DAY_COUNT", "Unknown")
-movie_name = os.getenv("LAST_MOVIE", "Unknown Movie")
+if not os.path.exists("state.json"):
+    print("❌ Error: `state.json` not found!")
+    exit()
+
+with open("state.json", "r") as f:
+    state_data = json.load(f)
+
+day_count = state_data.get("DAY_COUNT", "Unknown")
+movie_name = state_data.get("LAST_MOVIE", "Unknown Movie")
 
 print(f"✅ Retrieved DAY_COUNT: {day_count}")
 print(f"✅ Retrieved LAST_MOVIE: {movie_name}")
