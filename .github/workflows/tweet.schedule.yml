@@ -29,11 +29,9 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-          DAY_COUNT: ${{ secrets.DAY_COUNT }}
+          DAY_COUNT: ${{ vars.DAY_COUNT }}
         run: python main.py
 
-      - name: Update GitHub Secret with New Day Count
+      - name: Update GitHub Variable with New Day Count
         run: |
-          gh secret set DAY_COUNT --body="${{ env.DAY_COUNT }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "DAY_COUNT=$(( ${{ vars.DAY_COUNT }} + 1 ))" >> $GITHUB_ENV
