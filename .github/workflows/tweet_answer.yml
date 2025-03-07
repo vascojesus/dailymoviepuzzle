@@ -13,7 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: state  # Pull `state.json` from the `state` branch
+          persist-credentials: false  # Prevents default token usage
+
+      - name: Fetch the latest `state.json`
+        run: |
+          git fetch origin state || echo "State branch does not exist yet"
+          git checkout -b state || git checkout state
+          git pull origin state --rebase
 
       - name: Set up Python
         uses: actions/setup-python@v4

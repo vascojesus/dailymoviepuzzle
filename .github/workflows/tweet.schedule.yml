@@ -38,7 +38,19 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          
+          # Fetch the latest `state` branch before pushing
+          git fetch origin state || echo "State branch does not exist yet"
+
+          # Create `state` branch if it doesn't exist
           git checkout -b state || git checkout state
+
+          # Merge remote changes to avoid conflicts
+          git pull origin state --rebase
+
+          # Add and commit state.json
           git add state.json
           git commit -m "Update LAST_MOVIE"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git state
+
+          # Push changes with force-with-lease to avoid overwriting
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git state --force-with-lease
