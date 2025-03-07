@@ -39,8 +39,9 @@ media = api.media_upload(filename=random_image)
 tweet_text = f"Day {day_count}: 🎬 #DailyMoviePuzzle #Movie #Puzzle"
 response = client.create_tweet(text=tweet_text, media_ids=[media.media_id_string], user_auth=True)
 
-with open(os.getenv('GITHUB_ENV'), 'a') as env_file:
-    env_file.write(f"DAY_COUNT={day_count + 1}\n")
-    env_file.write(f"LAST_MOVIE={movie_name}\n")
+print(f"✅ Posted Daily Puzzle Tweet: Day {day_count}")
 
-print("Tweet posted successfully!", response)
+update_last_movie_cmd = f'gh variable set LAST_MOVIE --body "{movie_name}"'
+os.system(update_last_movie_cmd)
+
+print(f"✅ Stored LAST_MOVIE in GitHub Variables: {movie_name}")

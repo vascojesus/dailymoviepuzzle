@@ -32,6 +32,9 @@ jobs:
           DAY_COUNT: ${{ vars.DAY_COUNT }}
         run: python main.py
 
-      - name: Update GitHub Variable with New Day Count
+      - name: Update GitHub Variables with `LAST_MOVIE`
         run: |
-          echo "DAY_COUNT=$(( ${{ vars.DAY_COUNT }} + 1 ))" >> $GITHUB_ENV
+          echo "Updating GitHub Variable LAST_MOVIE..."
+          gh variable set LAST_MOVIE --body "${{ env.LAST_MOVIE }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

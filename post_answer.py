@@ -19,7 +19,9 @@ client = tweepy.Client(
 day_count = os.getenv("DAY_COUNT", "Unknown")
 movie_name = os.getenv("LAST_MOVIE", "Unknown Movie")
 
+print(f"✅ Retrieved DAY_COUNT: {day_count}")
+print(f"✅ Retrieved LAST_MOVIE: {movie_name}")
 tweet_text = f"ANSWER DAY {day_count}:\n🎬 {movie_name}"
 response = client.create_tweet(text=tweet_text, user_auth=True)
 
-print("Answer tweet posted successfully!", response)
+print("✅ Answer tweet posted successfully!", response)
