@@ -3,13 +3,16 @@ import json
 import tweepy
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
+# Twitter API credentials
 consumer_key = os.getenv("CONSUMER_KEY")
 consumer_secret = os.getenv("CONSUMER_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
+# Initialize Tweepy Client
 client = tweepy.Client(
     consumer_key=consumer_key,
     consumer_secret=consumer_secret,
@@ -17,19 +20,19 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
+# Load `state.json`
 if not os.path.exists("state.json"):
     print("❌ Error: `state.json` not found!")
     exit()
 
 with open("state.json", "r") as f:
-    state_data = json.load(f)
+    state = json.load(f)
 
-day_count = state_data.get("DAY_COUNT", "Unknown")
-movie_name = state_data.get("LAST_MOVIE", "Unknown Movie")
+day_count = state["DAY_COUNT"]
+movie_name = state["LAST_MOVIE"]
 
-print(f"✅ Retrieved DAY_COUNT: {day_count}")
-print(f"✅ Retrieved LAST_MOVIE: {movie_name}")
+# Post the answer tweet
 tweet_text = f"ANSWER DAY {day_count}:\n🎬 {movie_name}"
 response = client.create_tweet(text=tweet_text, user_auth=True)
 
-print("✅ Answer tweet posted successfully!", response)
+print(f"✅ Answer tweet posted successfully: {movie_name}")
